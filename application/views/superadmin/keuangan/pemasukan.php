@@ -13,19 +13,21 @@
                 <a href="" class="btn btn-primary" data-toggle="modal" data-target="#modalTambahPemasukan"><i
                         class="fa fa-plus"></i>
                     Tambah</a>
-        
-
                 <div class="clearfix"></div>
             </div>
+
+            <?php $no_kegiatan = 1; foreach($kegiatan as $k): ?>
+                <h2>
+                 <b><span class="badge badge-primary fa fa-apple"> <?= $k['nama_kegiatan'] ?></span></b>
+                </h2>
             <div class="x_content">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card-box table-responsive">
-                            <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
+                            <table id="datatable-buttons-<?= $no_kegiatan ?>" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Kegiatan</th>
                                         <th>Jenis Pemasukan</th>
                                         <th>Nominal</th>
                                         <th>Tgl Pemasukan</th>
@@ -33,45 +35,51 @@
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <?php $no=1; foreach($data as $pemasukan): ?>
-                                <tr>
-                                    <td><?= $no ?></td>
-                                    <td><?= $pemasukan['nama_kegiatan'] ?></td>
-                                    <td><?= $pemasukan['jenis_pemasukan'] ?></td>
-                                    <td><?= rupiah($pemasukan['nominal']) ?></td>
-                                    <td><?= tgl_indo($pemasukan['tgl_pemasukan']) ?></td>
-                                    <td>
-                                            <?php $stt = $pemasukan['bukti_transfer']; ?>
-                                            <?php if($stt == ''){ ?>
-                                            <img src="<?= base_url('themes/no_images.png') ?>" width="50px">
-                                            <a href="" class="btn btn-sm btn-primary" data-toggle="modal"
-                                                data-target="#uploadBukti<?= $pemasukan['id_pemasukan'] ?>"><i
-                                                    class="fa fa-upload"></i></a>
-                                            <?php }else{ ?>
-                                            <img src="<?= base_url('themes/bukti_transfer/'.$pemasukan['bukti_transfer']) ?>"
-                                                width="200px">
-                                            <a href="javascript:void(0)"
-                                                onclick="hapusbuktitransfer('<?= $pemasukan['id_pemasukan'] ?>')"
-                                                class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-                                            <?php } ?>
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-warning" data-toggle="modal"
-                                            data-target="#edit<?= $pemasukan['id_pemasukan'] ?>"><i class="fa fa-edit"></i>
-                                            Edit</a>
-                                    </td>
-                                </tr>
-                                <?php $no++; endforeach; ?>
+                                <tbody>
+                                    <?php $no_laporan = 1; foreach ($data as $pemasukan): ?>
+                                        <?php if ($pemasukan['id_kegiatan'] == $k['id_kegiatan']): ?>
+                                            <tr>
+                                                <td><?= $no_laporan++ ?></td>
+                                                <td><?= $pemasukan['jenis_pemasukan'] ?></td>
+                                                <td><?= rupiah($pemasukan['nominal']) ?></td>
+                                                <td><?= tgl_indo($pemasukan['tgl_pemasukan']) ?></td>
+                                                <td>
+                                                <?php $stt = $pemasukan['bukti_transfer']; ?>
+                                                <?php if($stt == ''){ ?>
+                                                <img src="<?= base_url('themes/no_images.png') ?>" width="50px">
+                                                <a href="" class="btn btn-sm btn-primary" data-toggle="modal"
+                                                    data-target="#uploadBukti<?= $pemasukan['id_pemasukan'] ?>"><i
+                                                        class="fa fa-upload"></i></a>
+                                                <?php }else{ ?>
+                                                <img src="<?= base_url('themes/bukti_transfer/'.$pemasukan['bukti_transfer']) ?>"
+                                                    width="200px">
+                                                <a href="javascript:void(0)"
+                                                    onclick="hapusbuktitransfer('<?= $pemasukan['id_pemasukan'] ?>')"
+                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                                                <?php } ?>
+                                                </td>
+                                                    
+                                                <td>
+                                                    <a href="" class="btn btn-warning" data-toggle="modal"
+                                                    data-target="#edit<?= $pemasukan['id_pemasukan'] ?>"><i class="fa fa-edit"></i>
+                                                    Edit</a>
+                                                </td>
+                                            </tr>
+                                            <?php $no_laporan++; ?>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+            <?php $no_kegiatan++; endforeach; ?>
             <!-- /page content -->
         </div>
     </div>
 </div>
+
 
 
 <!-- modal tambah -->
@@ -95,7 +103,7 @@
                                 <td>
                                     <select name="id_kegiatan" class="form-control" required="">
                                         <?php 
-                                          $kegiatan = $this->db->get('tb_kegiatan')->result_array();
+                                          $kegiatan;
                                           foreach($kegiatan as $row): ?>
                                             <option value="<?= $row['id_kegiatan'] ?>"><?= $row['nama_kegiatan'] ?></option>
                                         <?php endforeach; ?>
@@ -205,7 +213,7 @@
                                 <td>
                                     <select name="id_kegiatan" class="form-control" required="">
                                         <?php 
-                                          $kegiatan = $this->db->get('tb_kegiatan')->result_array();
+                                          $kegiatan;
                                           foreach($kegiatan as $row): ?>
                                             <option value="<?= $row['id_kegiatan'] ?>" <?= $row['id_kegiatan'] == $pemasukan['id_kegiatan'] ? 'selected' : '' ?>><?= $row['nama_kegiatan'] ?></option>
                                         <?php endforeach; ?>
@@ -251,6 +259,18 @@
 
 
 <script>
+    $(document).ready(function() {
+        <?php $no_kegiatan = 1; foreach($kegiatan as $k): ?>
+            $('#datatable-buttons-<?= $no_kegiatan ?>').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        <?php $no_kegiatan++; endforeach; ?>
+    });
+
+    
 //add data
 $(document).ready(function() {
     $('#add').submit(function(e) {

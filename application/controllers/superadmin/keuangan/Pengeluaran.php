@@ -26,9 +26,14 @@ class Pengeluaran extends CI_controller
     //Pengelauaran
     public function index($value='')
     {
-     $view = array('judul'      =>'Data Pengeluaran',
+      $id_kegiatan = $this->m_kegiatan->view()->result_array();
+      $id_kegiatan = array_column($id_kegiatan, 'id_kegiatan');
+
+      $view = array(
+                    'judul'      =>'Data Pengeluaran',
                     'aksi'      =>'pengeluaran',
-                    'data'      =>$this->m_pengeluaran->view()->result_array(),
+                    'data'      =>$this->m_pengeluaran->view($id_kegiatan)->result_array(),
+                    'kegiatan'  =>$this->m_kegiatan->view()->result_array(),
                   );
 
       $this->load->view('superadmin/keuangan/pengeluaran',$view);

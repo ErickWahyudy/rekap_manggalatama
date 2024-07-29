@@ -26,13 +26,19 @@ class Pemasukan extends CI_controller
     //Pemasukan
     public function index($value='')
     {
-     $view = array('judul'      =>'Data Pemasukan',
-                    'aksi'      =>'pemasukan',
-                    'data'      =>$this->m_pemasukan->view()->result_array(),
-                  );
+      $id_kegiatan = $this->m_kegiatan->view()->result_array();
+      $id_kegiatan = array_column($id_kegiatan, 'id_kegiatan');
+      
+      $view = array(
+        'judul'      => 'Data Pemasukan',
+        'aksi'       => 'pemasukan',
+        'data'       => $this->m_pemasukan->view($id_kegiatan)->result_array(),
+        'kegiatan'   => $this->m_kegiatan->view()->result_array()
+      );
 
-      $this->load->view('user/keuangan/pemasukan',$view);
+      $this->load->view('user/keuangan/pemasukan', $view);
     }
+
 
     private function acak_id($panjang)
     {
@@ -279,37 +285,27 @@ class Pemasukan extends CI_controller
       //API hapus
       public function api_hapus($id='')
       {
-          if(empty($id)){
-              $response = [
-                  'status' => false,
-                  'message' => 'Data kosong'
-              ];
+        if(empty($id)){
+          $response = [
+            'status' => false,
+            'message' => 'Data kosong'
+          ];
+        }else{
+          if ($this->m_pemasukan->delete($id)) {
+            $response = [
+              'status' => true,
+              'message' => 'Berhasil menghapus data'
+            ];
           } else {
-              // Mendapatkan nama file foto dari database
-              $data = $this->m_pemasukan->view_id($id)->row_array();
-              $file = $data['bukti_transfer'];
-  
-              // Menghapus file dari folder
-              if ($file && file_exists('./themes/bukti_transfer/' . $file)) {
-                  unlink('./themes/bukti_transfer/' . $file);
-              }
-  
-              // Menghapus data dari database
-              if ($this->m_pemasukan->delete($id)) {
-                  $response = [
-                      'status' => true,
-                      'message' => 'Berhasil menghapus data'
-                  ];
-              } else {
-                  $response = [
-                      'status' => false,
-                      'message' => 'Gagal menghapus data'
-                  ];
-              }
+            $response = [
+              'status' => false,
+              'message' => 'Gagal menghapus data'
+            ];
           }
-          $this->output
-              ->set_content_type('application/json')
-              ->set_output(json_encode($response));
+        }
+        $this->output
+          ->set_content_type('application/json')
+          ->set_output(json_encode($response));
       }
 	
       //API hapus data dari database dan folder

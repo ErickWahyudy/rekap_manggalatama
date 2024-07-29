@@ -26,9 +26,14 @@ class Pengeluaran extends CI_controller
     //Pengelauaran
     public function index($value='')
     {
-     $view = array('judul'      =>'Data Pengeluaran',
+      $id_kegiatan = $this->m_kegiatan->view()->result_array();
+      $id_kegiatan = array_column($id_kegiatan, 'id_kegiatan');
+
+      $view = array(
+                    'judul'      =>'Data Pengeluaran',
                     'aksi'      =>'pengeluaran',
-                    'data'      =>$this->m_pengeluaran->view()->result_array(),
+                    'data'      =>$this->m_pengeluaran->view($id_kegiatan)->result_array(),
+                    'kegiatan'  =>$this->m_kegiatan->view()->result_array(),
                   );
 
       $this->load->view('user/keuangan/pengeluaran',$view);
@@ -232,40 +237,40 @@ class Pengeluaran extends CI_controller
       }
 
      //API hapus
-    public function api_hapus($id='')
-    {
-        if(empty($id)){
+public function api_hapus($id='')
+{
+    if(empty($id)){
+        $response = [
+            'status' => false,
+            'message' => 'Data kosong'
+        ];
+    } else {
+        // Mendapatkan nama file foto dari database
+        $data = $this->m_pengeluaran->view_id($id)->row_array();
+        $file = $data['bukti_nota'];
+
+        // Menghapus file dari folder
+        if ($file && file_exists('./themes/bukti_nota/' . $file)) {
+            unlink('./themes/bukti_nota/' . $file);
+        }
+
+        // Menghapus data dari database
+        if ($this->m_pengeluaran->delete($id)) {
             $response = [
-                'status' => false,
-                'message' => 'Data kosong'
+                'status' => true,
+                'message' => 'Berhasil menghapus data'
             ];
         } else {
-            // Mendapatkan nama file foto dari database
-            $data = $this->m_pengeluaran->view_id($id)->row_array();
-            $file = $data['bukti_nota'];
-
-            // Menghapus file dari folder
-            if ($file && file_exists('./themes/bukti_nota/' . $file)) {
-                unlink('./themes/bukti_nota/' . $file);
-            }
-
-            // Menghapus data dari database
-            if ($this->m_pengeluaran->delete($id)) {
-                $response = [
-                    'status' => true,
-                    'message' => 'Berhasil menghapus data'
-                ];
-            } else {
-                $response = [
-                    'status' => false,
-                    'message' => 'Gagal menghapus data'
-                ];
-            }
+            $response = [
+                'status' => false,
+                'message' => 'Gagal menghapus data'
+            ];
         }
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($response));
     }
+    $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($response));
+}
 
 	
 }

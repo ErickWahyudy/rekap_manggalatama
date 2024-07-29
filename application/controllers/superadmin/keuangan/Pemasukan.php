@@ -26,13 +26,19 @@ class Pemasukan extends CI_controller
     //Pemasukan
     public function index($value='')
     {
-     $view = array('judul'      =>'Data Pemasukan',
-                    'aksi'      =>'pemasukan',
-                    'data'      =>$this->m_pemasukan->view()->result_array(),
-                  );
+      $id_kegiatan = $this->m_kegiatan->view()->result_array();
+      $id_kegiatan = array_column($id_kegiatan, 'id_kegiatan');
+      
+      $view = array(
+        'judul'      => 'Data Pemasukan',
+        'aksi'       => 'pemasukan',
+        'data'       => $this->m_pemasukan->view($id_kegiatan)->result_array(),
+        'kegiatan'   => $this->m_kegiatan->view()->result_array()
+      );
 
-      $this->load->view('superadmin/keuangan/pemasukan',$view);
+      $this->load->view('superadmin/keuangan/pemasukan', $view);
     }
+
 
     private function acak_id($panjang)
     {

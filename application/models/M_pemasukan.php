@@ -10,14 +10,16 @@ private $table = 'tb_pemasukan';
 private $table2 = 'tb_kegiatan';
 
 //pemasukan
-public function view($value='')
+public function view($id_kegiatan='')
 {
-  $this->db->select ('*');
-  $this->db->from ($this->table);
-  $this->db->join ($this->table2, 'tb_pemasukan.id_kegiatan = tb_kegiatan.id_kegiatan');
+  $this->db->select('*');
+  $this->db->from($this->table);
+  $this->db->join($this->table2, 'tb_pemasukan.id_kegiatan = tb_kegiatan.id_kegiatan');
+  $this->db->where_in('tb_kegiatan.id_kegiatan', $id_kegiatan);
   $this->db->order_by('tgl_pemasukan', 'DESC');
   return $this->db->get();
 }
+
 
 public function view_id($id='')
 {

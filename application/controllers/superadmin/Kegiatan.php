@@ -27,7 +27,7 @@ class Kegiatan extends CI_controller
     {
      $view = array('judul'      =>'Data Kegiatan',
                     'aksi'      =>'kegiatan',
-                    'data'      =>$this->m_kegiatan->view()->result_array(),
+                    'data'      =>$this->m_kegiatan->view_kegiatan()->result_array(),
                   );
 
       $this->load->view('superadmin/kegiatan/lihat',$view);

@@ -33,9 +33,9 @@
                                     <td><?= $kegiatan['tahun'] ?></td>
                                     <td>
                                         <?php if($kegiatan['status'] == 'ON'): ?>
-                                        <span class="btn btn-success">Aktif</span>
+                                        <span class="btn btn-success">Tampilkan</span>
                                         <?php else: ?>
-                                        <span class="btn btn-danger">Tidak Aktif</span>
+                                        <span class="btn btn-danger">Sembunyikan</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -90,10 +90,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <select name="status" id="status" class="form-control">
-                                    <option value="ON">Aktif</option>
-                                    <option value="OFF">Tidak Aktif</option>
-                                </select>
+                                <input type="radio" name="status" value="ON" checked> Tampilkan
+                                <input type="radio" name="status" value="OFF"> Sembunyikan
                             </td>
                         </tr>
                         
@@ -143,10 +141,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <select name="status" id="status" class="form-control">
-                                    <option value="ON" <?php if($kegiatan['status'] == 'ON') echo 'selected' ?>>Aktif</option>
-                                    <option value="OFF" <?php if($kegiatan['status'] == 'OFF') echo 'selected' ?>>Tidak Aktif</option>
-                                </select>
+                                <input type="radio" name="status" value="ON" <?php if($kegiatan['status'] == 'ON'){echo 'checked';} ?>> Tampilkan
+                                <input type="radio" name="status" value="OFF" <?php if($kegiatan['status'] == 'OFF'){echo 'checked';} ?>> Sembunyikan
                             </td>
                         </tr>          
                       

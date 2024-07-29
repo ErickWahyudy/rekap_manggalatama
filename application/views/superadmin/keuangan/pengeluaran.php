@@ -17,15 +17,19 @@
 
                 <div class="clearfix"></div>
             </div>
+
+            <?php $no_kegiatan = 1; foreach($kegiatan as $k): ?>
+                <h2>
+                 <b><span class="badge badge-primary fa fa-apple"> <?= $k['nama_kegiatan'] ?></span></b>
+                </h2>
             <div class="x_content">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card-box table-responsive">
-                            <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
+                            <table id="datatable-buttons-<?= $no_kegiatan ?>" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Kegiatan</th>
                                         <th>Jenis Pengeluaran</th>
                                         <th>Nominal</th>
                                         <th>Tgl Pengeluaran</th>
@@ -33,33 +37,37 @@
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <?php $no=1; foreach($data as $pengeluaran): ?>
-                                <tr>
-                                    <td><?= $no ?></td>
-                                    <td><?= $pengeluaran['nama_kegiatan'] ?></td>
-                                    <td><?= $pengeluaran['jenis_pengeluaran'] ?></td>
-                                    <td><?= rupiah($pengeluaran['nominal']) ?></td>
-                                    <td><?= tgl_indo($pengeluaran['tgl_pengeluaran']) ?></td>
-                                    <td>
-                                        <?php if($pengeluaran['bukti_nota'] == null): ?>
-                                        <img src="<?= base_url('themes/no_images.png') ?>" width="50px">
-                                        <?php else: ?>
-                                        <img src="<?= base_url('themes/bukti_nota/'.$pengeluaran['bukti_nota']) ?>" width="200px">
+                               <tbody>
+                                    <?php $no_laporan = 1; foreach ($data as $pengeluaran): ?>
+                                        <?php if ($pengeluaran['id_kegiatan'] == $k['id_kegiatan']): ?>
+                                            <tr>
+                                                <td><?= $no_laporan++ ?></td>
+                                                <td><?= $pengeluaran['jenis_pengeluaran'] ?></td>
+                                                <td><?= rupiah($pengeluaran['nominal']) ?></td>
+                                                <td><?= tgl_indo($pengeluaran['tgl_pengeluaran']) ?></td>
+                                                <td>
+                                                    <?php if($pengeluaran['bukti_nota'] == null): ?>
+                                                    <img src="<?= base_url('themes/no_images.png') ?>" width="50px">
+                                                    <?php else: ?>
+                                                    <img src="<?= base_url('themes/bukti_nota/'.$pengeluaran['bukti_nota']) ?>" width="200px">
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <a href="" class="btn btn-warning" data-toggle="modal"
+                                                        data-target="#edit<?= $pengeluaran['id_pengeluaran'] ?>"><i class="fa fa-edit"></i>
+                                                        Edit</a>
+                                                </td>
+                                            </tr>
+                                            <?php $no_laporan++; ?>
                                         <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-warning" data-toggle="modal"
-                                            data-target="#edit<?= $pengeluaran['id_pengeluaran'] ?>"><i class="fa fa-edit"></i>
-                                            Edit</a>
-                                    </td>
-                                </tr>
-                                <?php $no++; endforeach; ?>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+            <?php $no_kegiatan++; endforeach; ?>
             <!-- /page content -->
         </div>
     </div>
@@ -87,7 +95,7 @@
                                 <td>
                                     <select name="id_kegiatan" class="form-control" required="">
                                         <?php 
-                                          $kegiatan = $this->db->get('tb_kegiatan')->result_array();
+                                          $kegiatan;
                                           foreach($kegiatan as $row): ?>
                                             <option value="<?= $row['id_kegiatan'] ?>"><?= $row['nama_kegiatan'] ?></option>
                                         <?php endforeach; ?>
@@ -121,7 +129,7 @@
                         <tr>
                             <td>
                             <input type="file" name="foto" id="bukti_nota" class="form-control"
-                                        onchange="previewLOGO()">
+                                        onchange="previewLOGO()" required>
                                     <img id="preview_logo" alt="image preview" width="50%" />
                             </td>
                         </tr>
@@ -160,7 +168,7 @@
                                 <td>
                                     <select name="id_kegiatan" class="form-control" required="">
                                         <?php 
-                                          $kegiatan = $this->db->get('tb_kegiatan')->result_array();
+                                          $kegiatan;
                                           foreach($kegiatan as $row): ?>
                                             <option value="<?= $row['id_kegiatan'] ?>" <?= $row['id_kegiatan'] == $pengeluaran['id_kegiatan'] ? 'selected' : '' ?>><?= $row['nama_kegiatan'] ?></option>
                                         <?php endforeach; ?>
@@ -206,6 +214,17 @@
 
 
 <script>
+    $(document).ready(function() {
+        <?php $no_kegiatan = 1; foreach($kegiatan as $k): ?>
+            $('#datatable-buttons-<?= $no_kegiatan ?>').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        <?php $no_kegiatan++; endforeach; ?>
+    });
+
 //add data
 $(document).ready(function() {
     $('#add').submit(function(e) {

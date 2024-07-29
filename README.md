@@ -1,1 +1,1 @@
-Web Aplikasi Sistem Antrian Periksa Pasien dengan algortima FIFO dan Priority
+Web Aplikasi Sistem Keuangan dan Data Organisasi Karang Taruna Manggala Tama Desa Jalen

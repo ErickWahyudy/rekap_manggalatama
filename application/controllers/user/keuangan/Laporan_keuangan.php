@@ -45,6 +45,7 @@ class Laporan_keuangan extends CI_controller
             'judul' => 'Data Pemasukan',
             'aksi' => 'pemasukan',
             'data' => $kegiatan,
+            'kegiatan' => $kegiatan,
             'total_pemasukan' => $total_pemasukan,
             'total_pengeluaran' => $total_pengeluaran,
         );

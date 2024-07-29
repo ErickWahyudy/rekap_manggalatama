@@ -76,21 +76,7 @@ class Login extends CI_controller
                 $this->session->set_userdata($sessionUser);
                 $this->session->set_flashdata('pesan', '<div class="btn btn-success">Anda Berhasil Login .....</div>');
                 redirect(base_url('user/home'));
-            } elseif ($pasien->num_rows() > 0) {
-                // Handle jika login sebagai pasien
-                $DataPasien = $pasien->row_array();
-                $sessionPasien = array(
-                    'pasien'             => TRUE,
-                    'id_pasien'       => $DataPasien['id_pasien'],
-                    'email'             => $DataPasien['email'],
-                    'password'          => $DataPasien['password'],
-                    'nama'              => $DataPasien['nama'],
-                    'no_hp'              => $DataPasien['no_hp'],
-                    'level'             => $DataPasien['id_level'],
-                );
-                $this->session->set_userdata($sessionPasien);
-                $this->session->set_flashdata('pesan', '<div class="btn btn-success">Anda Berhasil Login .....</div>');
-                redirect(base_url('pasien/home'));
+            
             } else {
                 // Periksa apakah email/username benar
                 $isEmailValid = $this->Login_m->IsEmailValidPengguna($email);
@@ -107,18 +93,7 @@ class Login extends CI_controller
                     </script>';
                     $this->session->set_flashdata('pesan', $pesan);
                     redirect(base_url('login'));
-                } elseif ($isEmailValidPasien->num_rows() > 0) {
-                    // Jika email benar, maka password salah
-                    $pesan = '<script>
-                    swal({
-                        title: "Password Salah",
-                        type: "error",
-                        showConfirmButton: true,
-                        confirmButtonText: "OKEE"
-                    });
-                    </script>';
-                    $this->session->set_flashdata('pesan', $pesan);
-                    redirect(base_url('login'));
+                
                 } else {
                     // Jika email salah, maka email tidak terdaftar
                     $pesan = '<script>

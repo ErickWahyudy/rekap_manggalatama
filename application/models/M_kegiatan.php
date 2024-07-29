@@ -13,6 +13,16 @@ public function view($value='')
 {
   $this->db->select ('*');
   $this->db->from ($this->table);
+  $this->db->where ('status', 'ON');
+  $this->db->order_by('tahun', 'DESC');
+  return $this->db->get();
+}
+
+public function view_kegiatan($value='')
+{
+  $this->db->select ('*');
+  $this->db->from ($this->table);
+  $this->db->order_by('tahun', 'DESC');
   return $this->db->get();
 }
 

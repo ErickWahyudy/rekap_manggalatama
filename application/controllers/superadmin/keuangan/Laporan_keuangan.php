@@ -26,7 +26,7 @@ class Laporan_keuangan extends CI_controller
     public function index($value='')
     {
         // Mengambil data kegiatan
-        $kegiatan = $this->db->query("SELECT * FROM tb_kegiatan")->result_array();
+        $kegiatan = $this->M_kegiatan->view()->result_array();
 
         // Mengambil total pemasukan dan pengeluaran per kegiatan
         $total_pemasukan = [];
@@ -45,6 +45,7 @@ class Laporan_keuangan extends CI_controller
             'judul' => 'Data Pemasukan',
             'aksi' => 'pemasukan',
             'data' => $kegiatan,
+            'kegiatan' => $kegiatan,
             'total_pemasukan' => $total_pemasukan,
             'total_pengeluaran' => $total_pengeluaran,
         );
