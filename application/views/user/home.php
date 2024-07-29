@@ -22,7 +22,7 @@
         </div>
         <div class="animated flipInY col-lg-3 col-md-3 col-sm-3 col-xs-12">
             <div class="tile-stats">
-            <a href="<?= base_url('user/keuangan/laporan_keuangan') ?>">
+            <a href="<?= base_url('user/keuangan/laporan') ?>">
                 <div class="count"> <i class="fa fa-bar-chart"></i></div>
                 <h3 style="color: #1ABB9C;">Laporan Keuangan</h3>
             </a>

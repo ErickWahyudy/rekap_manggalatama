@@ -141,7 +141,7 @@
                     <ul class="nav child_menu">
                       <li><a href="<?= base_url('superadmin/keuangan/pemasukan') ?>">Pemasukan</a></li>
                       <li><a href="<?= base_url('superadmin/keuangan/pengeluaran') ?>">Pengeluaran</a></li>
-                      <li><a href="<?= base_url('superadmin/keuangan/laporan_keuangan') ?>">Laporan Keuangan</a></li>
+                      <li><a href="<?= base_url('superadmin/keuangan/laporan') ?>">Laporan Keuangan</a></li>
                     </ul>
                   </li>
                   <li><a href="<?= base_url('superadmin/kegiatan') ?>"><i class="fa fa-check-circle-o"></i> Data Kegiatan</a></li>
@@ -173,7 +173,7 @@
                     <ul class="nav child_menu">
                       <li><a href="<?= base_url('admin/keuangan/pemasukan') ?>">Pemasukan</a></li>
                       <li><a href="<?= base_url('admin/keuangan/pengeluaran') ?>">Pengeluaran</a></li>
-                      <li><a href="<?= base_url('admin/keuangan/laporan_keuangan') ?>">Laporan Keuangan</a></li>
+                      <li><a href="<?= base_url('admin/keuangan/laporan') ?>">Laporan Keuangan</a></li>
                     </ul>
                   </li>
                   <li><a href="<?= base_url('admin/kegiatan') ?>"><i class="fa fa-check-circle-o"></i> Data Kegiatan</a></li>
@@ -201,7 +201,7 @@
                     <ul class="nav child_menu">
                       <li><a href="<?= base_url('user/keuangan/pemasukan') ?>">Pemasukan</a></li>
                       <li><a href="<?= base_url('user/keuangan/pengeluaran') ?>">Pengeluaran</a></li>
-                      <li><a href="<?= base_url('user/keuangan/laporan_keuangan') ?>">Laporan Keuangan</a></li>
+                      <li><a href="<?= base_url('user/keuangan/laporan') ?>">Laporan Keuangan</a></li>
                     </ul>
                   </li>
                 </ul>

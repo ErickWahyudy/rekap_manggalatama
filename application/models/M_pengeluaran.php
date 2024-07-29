@@ -24,6 +24,16 @@ public function view_id($id='')
  return $this->db->select ('*')->from ($this->table)->where ('id_pengeluaran', $id)->get ();
 }
 
+public function view_by_id_kegiatan($id='')
+{
+  $this->db->select ('*');
+  $this->db->from ($this->table);
+  $this->db->join ($this->table2, 'tb_pengeluaran.id_kegiatan = tb_kegiatan.id_kegiatan');
+  $this->db->where ('tb_pengeluaran.id_kegiatan', $id);
+  $this->db->order_by('tgl_pengeluaran', 'DESC');
+  return $this->db->get();
+}
+
 //mengambil id pengeluaran urut terakhir
 public function id_urut($value='')
 { 

@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-class Laporan_keuangan extends CI_controller
+class Laporan extends CI_controller
 {
     function __construct()
     {
@@ -51,5 +51,19 @@ class Laporan_keuangan extends CI_controller
         );
 
         $this->load->view('superadmin/keuangan/laporan', $view);
+    }
+
+    public function detail($id_kegiatan)
+    {
+        $data = $this->m_pengeluaran->view_by_id_kegiatan($id_kegiatan)->result_array();
+        $kegiatan = $this->M_kegiatan->view_id($id_kegiatan)->row_array();
+        $view = array(
+            'judul' => 'Detail Pengeluaran',
+            'aksi' => 'pengeluaran',
+            'data' => $data,
+            'kegiatan' => $kegiatan,
+        );
+
+        $this->load->view('superadmin/keuangan/detail_laporan', $view);
     }
 }
