@@ -365,8 +365,30 @@
             <div class="">
                 <div class="page-title">
                     <div class="title_left">
+                    <?php
+                    // Menentukan URL Dashboard berdasarkan level pengguna
+                    $user_level = $this->session->userdata('level');
+                    switch ($user_level) {
+                        case "1":
+                            $dashboard_url = base_url('superadmin/home');
+                            break;
+                        case "2":
+                            $dashboard_url = base_url('admin/home');
+                            break;
+                        case "3":
+                            $dashboard_url = base_url('user/home');
+                            break;
+                        case "4":
+                            $dashboard_url = base_url('public/home');
+                            break;
+                        default:
+                            $dashboard_url = base_url(); // URL default jika level tidak dikenali
+                    }
+                    ?>
+                    <a href="<?= $dashboard_url ?>">
                         <h4><i class="fa fa-dashboard"></i>
                             Dashboard | <small><?= $judul ?></small></h4>
+                      </a>
                     </div>
                 </div>
                 <div class="clearfix"></div>

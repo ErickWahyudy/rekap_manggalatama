@@ -35,7 +35,7 @@ class Home extends CI_controller
 	public function index($id='')
 	{
 		// Mengambil data kegiatan
-        $kegiatan = $this->db->query("SELECT * FROM tb_kegiatan")->result_array();
+        $kegiatan = $this->m_kegiatan->view()->result_array();
 
         // Mengambil total pemasukan dan pengeluaran per kegiatan
         $total_pemasukan = [];
@@ -50,10 +50,12 @@ class Home extends CI_controller
             $total_pengeluaran[$id_kegiatan] = $pengeluaran['total_pengeluaran'] ?? 0;
         }
 
-		$view = array('judul'      		=>'Home',
-						'aksi'      	=>'lihat',
-						'total_pemasukan' => $total_pemasukan,
-            			'total_pengeluaran' => $total_pengeluaran,
+		$view = array('judul'      			=>'Home',
+						'aksi'      		=>'lihat',
+						'data' 				=> $kegiatan,
+						'kegiatan' 			=> $kegiatan,
+						'total_pemasukan' 	=> $total_pemasukan,
+						'total_pengeluaran' => $total_pengeluaran,
 	  );
 
 	 $this->load->view('superadmin/home',$view);

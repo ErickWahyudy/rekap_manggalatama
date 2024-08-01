@@ -19,14 +19,14 @@ class Laporan extends CI_controller
         }
         $this->load->model('m_pemasukan');
         $this->load->model('m_pengeluaran');
-        $this->load->model('M_kegiatan');
+        $this->load->model('m_kegiatan');
     }
 
     // Pemasukan
     public function index($value='')
     {
         // Mengambil data kegiatan
-        $kegiatan = $this->M_kegiatan->view()->result_array();
+        $kegiatan = $this->m_kegiatan->view()->result_array();
 
         // Mengambil total pemasukan dan pengeluaran per kegiatan
         $total_pemasukan = [];
@@ -53,10 +53,10 @@ class Laporan extends CI_controller
         $this->load->view('superadmin/keuangan/laporan', $view);
     }
 
-    public function detail($id_kegiatan)
+    public function detail_pengeluaran($id_kegiatan)
     {
         $data = $this->m_pengeluaran->view_by_id_kegiatan($id_kegiatan)->result_array();
-        $kegiatan = $this->M_kegiatan->view_id($id_kegiatan)->row_array();
+        $kegiatan = $this->m_kegiatan->view_id($id_kegiatan)->row_array();
         $view = array(
             'judul' => 'Detail Pengeluaran',
             'aksi' => 'pengeluaran',
@@ -64,6 +64,20 @@ class Laporan extends CI_controller
             'kegiatan' => $kegiatan,
         );
 
-        $this->load->view('superadmin/keuangan/detail_laporan', $view);
+        $this->load->view('superadmin/keuangan/detail_pengeluaran', $view);
+    }
+
+    public function detail_pemasukan($id_kegiatan)
+    {
+        $data = $this->m_pemasukan->view_by_id_kegiatan($id_kegiatan)->result_array();
+        $kegiatan = $this->m_kegiatan->view_id($id_kegiatan)->row_array();
+        $view = array(
+            'judul' => 'Detail Pemasukan',
+            'aksi' => 'pemasukan',
+            'data' => $data,
+            'kegiatan' => $kegiatan,
+        );
+
+        $this->load->view('superadmin/keuangan/detail_pemasukan', $view);
     }
 }

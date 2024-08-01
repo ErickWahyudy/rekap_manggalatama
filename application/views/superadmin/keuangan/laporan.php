@@ -24,7 +24,6 @@
                                         <th>Total Pemasukan</th>
                                         <th>Total Pengeluaran</th>
                                         <th>Sisa Dana</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -33,12 +32,20 @@
                                             <tr>
                                                 <td><?= $no_laporan ?></td>
                                                 <td><?= $laporan['nama_kegiatan'] ?></td>
-                                                <td><?= rupiah($total_pemasukan[$laporan['id_kegiatan']]) ?></td>
-                                                <td><?= rupiah($total_pengeluaran[$laporan['id_kegiatan']]) ?></td>
-                                                <td><?= rupiah($total_pemasukan[$laporan['id_kegiatan']] - $total_pengeluaran[$laporan['id_kegiatan']]) ?></td>
                                                 <td>
-                                                    <a href="<?= site_url('superadmin/keuangan/laporan/detail/'.$laporan['id_kegiatan']) ?>" class="btn btn-info btn-xs">Detail</a>
+                                                    <?= rupiah($total_pemasukan[$laporan['id_kegiatan']]) ?>
+                                                    <a href="<?= site_url('superadmin/keuangan/laporan/detail_pemasukan/'.$laporan['id_kegiatan']) ?>" class="btn btn-info btn-xs">
+                                                    <span class="fa fa-eye"></span>
+                                                    </a>
                                                 </td>
+                                                <td>
+                                                    <?= rupiah($total_pengeluaran[$laporan['id_kegiatan']]) ?>
+                                                    <a href="<?= site_url('superadmin/keuangan/laporan/detail_pengeluaran/'.$laporan['id_kegiatan']) ?>" class="btn btn-info btn-xs">
+                                                    <span class="fa fa-eye"></span>
+                                                    </a>
+                                                </td>
+                                                <td><?= rupiah($total_pemasukan[$laporan['id_kegiatan']] - $total_pengeluaran[$laporan['id_kegiatan']]) ?></td>
+                                               
                                             </tr>
                                         <?php endif; ?>
                                     <?php endforeach; ?>
