@@ -13,7 +13,7 @@
     <div class="col-md-12 col-sm-12 ">
         <div class="x_panel">
         <h2>Detail Pengeluaran: <?= $kegiatan['nama_kegiatan'] ?></h2>
-            <div class="x_title">      
+            <div class="x_title">     
                 <div class="clearfix"></div>
             </div>
 

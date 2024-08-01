@@ -223,7 +223,7 @@
             });
         <?php $no_kegiatan++; endforeach; ?>
     });
-    
+
 //add data
 $(document).ready(function() {
     $('#add').submit(function(e) {

@@ -79,8 +79,6 @@
     </div>
 </div>
 
-
-
 <!-- modal tambah -->
 <div class="modal fade" id="modalTambahPemasukan" tabindex="-1" role="dialog" aria-labelledby="modalTambahPemasukanLabel"
     aria-hidden="true">
