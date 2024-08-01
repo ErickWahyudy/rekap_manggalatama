@@ -324,7 +324,7 @@
                                 <img src="<?= base_url('themes/foto_profile') ?>/<?= $data['foto_profile'] ?>" alt="" class="img-circle profile_img">
                               <?php } ?>
                             </div>
-                            <a class="dropdown-item"  href="<?= base_url('admin/profile') ?>"> Profile</a>
+                            <a class="dropdown-item"  href="<?= base_url('user/profile') ?>"> Profile</a>
                             <a href="javascript:void(0)" onclick="keluar()" class="dropdown-item"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                           </div>
                         </li>

@@ -58,7 +58,6 @@
                                                         Edit</a>
                                                 </td>
                                             </tr>
-                                            <?php $no_laporan++; ?>
                                         <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>

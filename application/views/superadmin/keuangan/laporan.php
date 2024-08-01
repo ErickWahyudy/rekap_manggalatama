@@ -40,7 +40,6 @@
                                                     <a href="<?= site_url('superadmin/keuangan/laporan/detail/'.$laporan['id_kegiatan']) ?>" class="btn btn-info btn-xs">Detail</a>
                                                 </td>
                                             </tr>
-                                            <?php $no_laporan++; ?>
                                         <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
