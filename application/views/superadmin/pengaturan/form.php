@@ -14,7 +14,7 @@
                     <div class="col-sm-12">
                         <div class="card-box table-responsive">
                             <table id="datatable" class="table table-striped table-bordered">
-                                <?php foreach($data->result_array() as $pengaturan): ?>
+                                <?php foreach($data as $pengaturan): ?>
                                 <thead>
                                 <tbody>
                                     <tr>
@@ -70,7 +70,7 @@
 
 
     <!-- Modal edit judul-->
-    <?php foreach($data->result_array() as $pengaturan): ?>
+    <?php foreach($data as $pengaturan): ?>
     <div class="modal fade" id="edit<?= $pengaturan['id_pengaturan'] ?>" tabindex="-1" role="dialog"
         aria-labelledby="edit<?= $pengaturan['id_pengaturan'] ?>Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -136,7 +136,7 @@
     <!-- End Modal edit judul-->
 
     <!-- Modal edit logo-->
-    <?php foreach($data->result_array() as $pengaturan): ?>
+    <?php foreach($data as $pengaturan): ?>
     <div class="modal fade" id="editlogo<?= $pengaturan['id_pengaturan'] ?>" tabindex="-1" role="dialog"
         aria-labelledby="editlogo<?= $pengaturan['id_pengaturan'] ?>Label" aria-hidden="true">
         <div class="modal-dialog" role="document">

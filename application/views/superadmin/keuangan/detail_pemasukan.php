@@ -12,8 +12,8 @@
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
         <div class="x_panel">
-        <h2>Detail Pengeluaran: <?= $kegiatan['nama_kegiatan'] ?></h2>
-            <div class="x_title">     
+            <h2>Detail Pengeluaran: <?= $kegiatan['nama_kegiatan'] ?></h2>
+            <div class="x_title">
                 <div class="clearfix"></div>
             </div>
 
@@ -33,19 +33,23 @@
                                 </thead>
                                 <tbody>
                                     <?php $no = 1; foreach ($data as $pemasukan): ?>
-                                        <tr>
-                                            <td><?= $no++ ?></td>
-                                            <td><?= $pemasukan['jenis_pemasukan'] ?></td>
-                                            <td><?= rupiah($pemasukan['nominal']) ?></td>
-                                            <td><?= tgl_indo($pemasukan['tgl_pemasukan']) ?></td>
-                                            <td>
-                                                <?php if($pemasukan['bukti_transfer'] == null): ?>
-                                                <img src="<?= base_url('themes/no_images.png') ?>" width="50px">
-                                                <?php else: ?>
-                                                <img src="<?= base_url('themes/bukti_transfer/'.$pemasukan['bukti_transfer']) ?>" width="200px">
-                                                <?php endif; ?>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td><?= $no++ ?></td>
+                                        <td><?= $pemasukan['jenis_pemasukan'] ?></td>
+                                        <td><?= rupiah($pemasukan['nominal']) ?></td>
+                                        <td><?= tgl_indo($pemasukan['tgl_pemasukan']) ?></td>
+                                        <td>
+                                            <?php if($pemasukan['bukti_transfer'] == null): ?>
+                                            <img src="<?= base_url('themes/no_images.png') ?>" width="50px">
+                                            <?php else: ?>
+                                            <a href="<?= base_url('themes/bukti_transfer/'.$pemasukan['bukti_transfer']) ?>"
+                                                target="_blank">
+                                                <img src="<?= base_url('themes/bukti_transfer/'.$pemasukan['bukti_transfer']) ?>"
+                                                    width="50%">
+                                            </a>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>

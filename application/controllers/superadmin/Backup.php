@@ -22,140 +22,176 @@ class Backup extends CI_controller
    $this->load->model('m_admin'); 
 }
 
+private $token_api = '123backup'; //ganti dengan token API yang valid
 
-  public function index() {
-        $folderPath = FCPATH . 'themes/backup/';  // Path ke folder yang ingin Anda baca
-        $files = scandir($folderPath);
 
-        // Menyaring entri "`.`" dan "`..`" dari daftar file
-        $filteredFiles = array_diff($files, array('.', '..'));
-
-        $view = array('judul'     =>'Backup Database',
-                      'files'     => $filteredFiles  ,
-        );
+public function index() {
+        $api_url = base_url('superadmin/api/api_backup/api_get_view');
+        $token = $this->token_api;
+    
+        $curl = curl_init();
+    
+        curl_setopt($curl, CURLOPT_URL, $api_url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'Authorization: Bearer ' . $token
+        ]);
+    
+        $response = curl_exec($curl);
+    
+        curl_close($curl);
+    
+        $data_backup = json_decode($response, true);
+    
+        if (isset($data_backup['status']) && $data_backup['status'] === true) {
+            $view = array(
+                'judul' => 'Backup Database',
+                'aksi'  => 'backup',
+                'files'  => $data_backup['data'],
+            );
+        } else {
+            $view = array(
+                'judul' => 'Backup Database',
+                'aksi'  => 'backup',
+                'files'  => [],  
+                'error_message' => $data_backup['message'] ?? 'Gagal mengambil data dari API'
+            );
+        }
 
     $this->load->view('superadmin/backup/form',$view);
-  }
+}
+    
 
   public function backupDatabase() {
-    // Nama file backup
-    date_default_timezone_set('Asia/Jakarta');
-    $timestamp = date('d-F-Y_H-i-s');
-    $backup_file_name = 'backup_' . $timestamp . '.sql';
+    $api_url = base_url('superadmin/api/api_backup/api_add_backup');
+    $token = $this->token_api;
 
-    // Konfigurasi database
-    $db_config = array(
-        'format'      => 'sql', // Format backup
-        'filename'    => $backup_file_name, // Nama file backup
-        'add_drop'    => TRUE, // Menambahkan perintah DROP TABLE
-        'add_insert'  => TRUE, // Menambahkan perintah INSERT INTO
-        'newline'     => "\n", // Karakter baris baru
-    );
+    $curl = curl_init();
 
-    // Backup database
-    $backup = $this->dbutil->backup($db_config);
+    curl_setopt($curl, CURLOPT_URL, $api_url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, [
+        'Authorization: Bearer ' . $token
+    ]);
 
-    // Simpan file backup di direktori tertentu (misal: themes/backup/)
-    write_file('themes/backup/' . $backup_file_name, $backup);
+    $response = curl_exec($curl);
 
-    if ($backup) {
-        $response = array(
-            'status' => 'success',
-            'message' => 'Database backup successful',
-            'filename' => $backup_file_name
-        );
+    curl_close($curl);
+
+    $data_response = json_decode($response, true);
+
+    if (isset($data_response['status']) && $data_response['status'] === true) {
+        $response = [
+            'status' => true,
+            'message' => 'Berhasil melakukan backup database'
+        ];
     } else {
-        $response = array(
-            'status' => 'error',
-            'message' => 'Database backup failed'
-        );
+        $response = [
+            'status' => false,
+            'message' => $data_response['message'] ?? 'Gagal melakukan backup database'
+        ];
     }
 
-    // Set response content type to JSON
-    $this->output->set_content_type('application/json');
-    // Encode the response as JSON and send it to the client
-    $this->output->set_output(json_encode($response));
-  }
+    $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($response));
 
-  public function restoreDatabase() {
-    $file_path = 'themes/backup/' . $_FILES['file']['name'];
-
-    // Disable foreign key constraints
-    $this->db->query('SET FOREIGN_KEY_CHECKS=0');
-
-    // Baca isi file cadangan SQL
-    $sql = file_get_contents($file_path);
-
-    // Pisahkan pernyataan SQL
-    $sql_commands = explode(";\n", $sql);
-
-    // Mulai transaksi
-    $this->db->trans_start();
-
-    // Eksekusi pernyataan SQL kembali untuk mengembalikan data
-    foreach ($sql_commands as $command) {
-        if (trim($command) !== "") {
-            $this->db->query($command);
-        }
-    }
-
-    // Selesaikan transaksi
-    $this->db->trans_complete();
-
-    // Enable foreign key constraints
-    $this->db->query('SET FOREIGN_KEY_CHECKS=1');
-
-    if ($this->db->trans_status() === FALSE) {
-        // Transaksi gagal, ada kesalahan dalam mengembalikan data
-        $response = array(
-            'status' => 'error',
-            'message' => 'Failed to restore data'
-        );
-    } else {
-        // Transaksi berhasil, data telah dikembalikan
-        $response = array(
-            'status' => 'success',
-            'message' => 'Database restore successful'
-        );
-    }
-
-    // Set response content type to JSON
-    $this->output->set_content_type('application/json');
-    // Encode the response as JSON and send it to the client
-    $this->output->set_output(json_encode($response));
 }
+
+    public function restoreDatabase() {
+        $file = $_FILES['file']; // Mengambil file dari form
+
+        if(empty($file)) {
+            $response = [
+                'status' => false,
+                'message' => 'Data kosong'
+            ];
+        } else {
+            $api_url = base_url('superadmin/api/api_backup/api_restore');
+            $token = $this->token_api;
+
+            $curl = curl_init();
+
+            curl_setopt($curl, CURLOPT_URL, $api_url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                'Authorization: Bearer ' . $token
+            ]);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, [
+                'file' => new CURLFile($file['tmp_name'], $file['type'], $file['name'])
+            ]);
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+
+            $data_response = json_decode($response, true);
+
+            if (isset($data_response['status']) && $data_response['status'] === true) {
+                $response = [
+                    'status' => true,
+                    'message' => 'Berhasil melakukan restore database'
+                ];
+            } else {
+                $response = [
+                    'status' => false,
+                    'message' => $data_response['message'] ?? 'Gagal melakukan restore database'
+                ];
+            }
+        }
+        // Set response content type to JSON
+        $this->output->set_content_type('application/json');
+        // Encode the response as JSON and send it to the client
+        $this->output->set_output(json_encode($response));
+    }
+
 
 
 public function hapusBackup() {
     $backup = $this->input->post('backup'); // Ambil nilai dari parameter backup
 
-    if ($backup !== null) {
-        $file_path = FCPATH . 'themes/backup/' . $backup;
+    if(empty($backup)) {
+        $response = [
+          'status' => false,
+          'message' => 'Data kosong'
+        ];
+       } else {
+           $api_url = base_url('superadmin/api/api_backup/api_delete_backup/'.$backup);
+           $token = $this->token_api;
 
-        // Hapus file backup
-        if (unlink($file_path)) {
-            $response = array(
-                'status' => 'success',
-                'message' => 'Database backup deleted'
-            );
-        } else {
-            $response = array(
-                'status' => 'error',
-                'message' => 'Database backup failed to delete'
-            );
+           $curl = curl_init();
+
+                curl_setopt($curl, CURLOPT_URL, $api_url);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                    'Authorization: Bearer ' . $token
+                ]);
+
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+
+                $data_response = json_decode($response, true);
+
+                if (isset($data_response['status']) && $data_response['status'] === true) {
+                    $response = [
+                        'status' => true,
+                        'message' => 'Berhasil menghapus data'
+                    ];
+                } else {
+                    $response = [
+                        'status' => false,
+                        'message' => $data_response['message'] ?? 'Gagal menghapus data'
+                    ];
+                }
+
+                $this->output
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($response));
+            }
         }
-    } else {
-        $response = array(
-            'status' => 'error',
-            'message' => 'Invalid backup parameter'
-        );
-    }
-
-    // Set response content type to JSON
-    $this->output->set_content_type('application/json');
-    // Encode the response as JSON and send it to the client
-    $this->output->set_output(json_encode($response));
-}
 
 
 

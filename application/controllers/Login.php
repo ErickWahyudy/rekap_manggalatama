@@ -3,7 +3,9 @@
    author by Kassandra Production
 */
 
-class Login extends CI_controller
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class Login extends CI_Controller
 {
     function __construct()
     {
@@ -17,7 +19,7 @@ class Login extends CI_controller
 
     public function index()
     {
-        if (isset($_POST['login'])) {
+        if ($this->input->method() == 'post') {
             $nama = $this->input->post('email');
             $no_hp = $this->input->post('email');
             $email = $this->input->post('email');
@@ -29,7 +31,6 @@ class Login extends CI_controller
             $user = $this->Login_m->User($nama, $no_hp, $email, md5($password));
 
             if ($superadmin->num_rows() > 0) {
-                // Handle jika login sebagai superadmin
                 $DataSuperAdmin = $superadmin->row_array();
                 $sessionSuperAdmin = array(
                     'superadmin'        => TRUE,
@@ -37,15 +38,17 @@ class Login extends CI_controller
                     'email'             => $DataSuperAdmin['email'],
                     'password'          => $DataSuperAdmin['password'],
                     'nama'              => $DataSuperAdmin['nama'],
-                    'no_hp'              => $DataSuperAdmin['no_hp'],
+                    'no_hp'             => $DataSuperAdmin['no_hp'],
                     'keterangan'        => $DataSuperAdmin['keterangan'],
                     'level'             => $DataSuperAdmin['id_level'],
                 );
                 $this->session->set_userdata($sessionSuperAdmin);
-                $this->session->set_flashdata('pesan', '<div class="btn btn-primary">Anda Berhasil Login .....</div>');
-                redirect(base_url('superadmin/home'));
+                $response = array(
+                    'status' => 'success', 
+                    'redirect' => base_url('superadmin/home')
+                );
+
             } elseif ($admin->num_rows() > 0) {
-                // Handle jika login sebagai admin
                 $DataAdmin = $admin->row_array();
                 $sessionAdmin = array(
                     'admin'             => TRUE,
@@ -53,15 +56,17 @@ class Login extends CI_controller
                     'email'             => $DataAdmin['email'],
                     'password'          => $DataAdmin['password'],
                     'nama'              => $DataAdmin['nama'],
-                    'no_hp'              => $DataAdmin['no_hp'],
+                    'no_hp'             => $DataAdmin['no_hp'],
                     'keterangan'        => $DataAdmin['keterangan'],
                     'level'             => $DataAdmin['id_level'],
                 );
                 $this->session->set_userdata($sessionAdmin);
-                $this->session->set_flashdata('pesan', '<div class="btn btn-success">Anda Berhasil Login .....</div>');
-                redirect(base_url('admin/home'));
+                $response = array(
+                    'status' => 'success', 
+                    'redirect' => base_url('admin/home')
+                );
+
             } elseif ($user->num_rows() > 0) {
-                // Handle jika login sebagai user
                 $DataUser = $user->row_array();
                 $sessionUser = array(
                     'user'             => TRUE,
@@ -69,45 +74,32 @@ class Login extends CI_controller
                     'email'             => $DataUser['email'],
                     'password'          => $DataUser['password'],
                     'nama'              => $DataUser['nama'],
-                    'no_hp'              => $DataUser['no_hp'],
+                    'no_hp'             => $DataUser['no_hp'],
                     'keterangan'        => $DataUser['keterangan'],
                     'level'             => $DataUser['id_level'],
                 );
                 $this->session->set_userdata($sessionUser);
-                $this->session->set_flashdata('pesan', '<div class="btn btn-success">Anda Berhasil Login .....</div>');
-                redirect(base_url('user/home'));
-            
+                $response = array(
+                    'status' => 'success', 
+                    'redirect' => base_url('user/home')
+                );
             } else {
                 // Periksa apakah email/username benar
                 $isEmailValid = $this->Login_m->IsEmailValidPengguna($email);
-                // $isEmailValidPasien = $this->Login_m->IsEmailValidPasien($email);
+
                 if ($isEmailValid->num_rows() > 0) {
                     // Jika email benar, maka password salah
-                    $pesan = '<script>
-                    swal({
-                        title: "Password Salah",
-                        type: "error",
-                        showConfirmButton: true,
-                        confirmButtonText: "OKEE"
-                    });
-                    </script>';
-                    $this->session->set_flashdata('pesan', $pesan);
-                    redirect(base_url('login'));
-                
+                    $response = array('status' => 'error', 'message' => 'Password Salah');
                 } else {
                     // Jika email salah, maka email tidak terdaftar
-                    $pesan = '<script>
-                    swal({
-                        title: "Email Salah atau Tidak Terdaftar",
-                        type: "error",
-                        showConfirmButton: true,
-                        confirmButtonText: "OKEE"
-                    });
-                    </script>';
-                    $this->session->set_flashdata('pesan', $pesan);
-                    redirect(base_url('login'));
+                    $response = array('status' => 'error', 'message' => 'Email Salah atau Tidak Terdaftar');
                 }
             }
+
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));
+
         } else {
             $data = $this->m_pengaturan->view()->row_array();
             $x = array(

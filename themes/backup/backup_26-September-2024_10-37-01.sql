@@ -12,6 +12,12 @@ CREATE TABLE `tb_kegiatan` (
   PRIMARY KEY (`id_kegiatan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `tb_kegiatan` (`id_kegiatan`, `nama_kegiatan`, `tahun`, `status`) VALUES ('K001EI6gl1', 'Sholawat Kebangsaan bersama AM Madiun', '2024', 'ON');
+INSERT INTO `tb_kegiatan` (`id_kegiatan`, `nama_kegiatan`, `tahun`, `status`) VALUES ('K002n83rPl', 'Kas Karang Taruna Manggala Tama', '2023', 'ON');
+INSERT INTO `tb_kegiatan` (`id_kegiatan`, `nama_kegiatan`, `tahun`, `status`) VALUES ('K003MacZlY', 'dddd', '2021', 'ON');
+INSERT INTO `tb_kegiatan` (`id_kegiatan`, `nama_kegiatan`, `tahun`, `status`) VALUES ('K004rxUUiE', 'ddd', '0000', 'ON');
+
+
 #
 # TABLE STRUCTURE FOR: tb_level
 #
@@ -40,13 +46,18 @@ CREATE TABLE `tb_pemasukan` (
   `id_pemasukan` varchar(15) NOT NULL,
   `jenis_pemasukan` varchar(100) NOT NULL,
   `nominal` varchar(20) NOT NULL,
-  `buktI_transfer` text NOT NULL,
+  `bukti_transfer` text NOT NULL,
   `tgl_pemasukan` date NOT NULL,
   `id_kegiatan` varchar(15) NOT NULL,
   PRIMARY KEY (`id_pemasukan`),
   KEY `id_kegiatan` (`id_kegiatan`),
   CONSTRAINT `tb_pemasukan_ibfk_1` FOREIGN KEY (`id_kegiatan`) REFERENCES `tb_kegiatan` (`id_kegiatan`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `tb_pemasukan` (`id_pemasukan`, `jenis_pemasukan`, `nominal`, `bukti_transfer`, `tgl_pemasukan`, `id_kegiatan`) VALUES ('P004SXxsZT', 'Kandang Rukun Mulya', '400000', '', '2024-07-27', 'K001EI6gl1');
+INSERT INTO `tb_pemasukan` (`id_pemasukan`, `jenis_pemasukan`, `nominal`, `bukti_transfer`, `tgl_pemasukan`, `id_kegiatan`) VALUES ('P005DnpZF4', 'Kas Manggala Tama', '3500000', '', '2023-01-01', 'K002n83rPl');
+INSERT INTO `tb_pemasukan` (`id_pemasukan`, `jenis_pemasukan`, `nominal`, `bukti_transfer`, `tgl_pemasukan`, `id_kegiatan`) VALUES ('P006ZEgYai', 'Agrivet Jaya', '500000', '', '2024-07-29', 'K001EI6gl1');
+
 
 #
 # TABLE STRUCTURE FOR: tb_pengaturan
@@ -63,7 +74,7 @@ CREATE TABLE `tb_pengaturan` (
   PRIMARY KEY (`id_pengaturan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `tb_pengaturan` (`id_pengaturan`, `nama_judul`, `meta_keywords`, `meta_description`, `background`) VALUES ('P1xhDwL', 'Si-Periksa', 'Sistem Antrian Periksa Dokter', 'Si-Periksa merupakan web app untuk melayani antrian periksa pasien secara online', 'header_656f3421970de.jpg');
+INSERT INTO `tb_pengaturan` (`id_pengaturan`, `nama_judul`, `meta_keywords`, `meta_description`, `background`) VALUES ('P1xhDwL', 'Keuangan MGT', 'Sistem Keuangan Manggalama', 'Ini adalah sebuah aplikasi berbasis web untuk mengatur keuangan Karangtaruna Manggala Tama Desa Jalen', 'background_66f278ea59ed7.jpg');
 
 
 #
@@ -83,6 +94,11 @@ CREATE TABLE `tb_pengeluaran` (
   KEY `id_kegiatan` (`id_kegiatan`),
   CONSTRAINT `tb_pengeluaran_ibfk_1` FOREIGN KEY (`id_kegiatan`) REFERENCES `tb_kegiatan` (`id_kegiatan`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `tb_pengeluaran` (`id_pengeluaran`, `jenis_pengeluaran`, `nominal`, `bukti_nota`, `tgl_pengeluaran`, `id_kegiatan`) VALUES ('P001HwOHcx', 'Konsumsi Hari pertama', '135000', 'header_66a5316cb5c6e.jpg', '2024-07-27', 'K001EI6gl1');
+INSERT INTO `tb_pengeluaran` (`id_pengeluaran`, `jenis_pengeluaran`, `nominal`, `bukti_nota`, `tgl_pengeluaran`, `id_kegiatan`) VALUES ('P002OMlI6u', 'Konsumsi Hari kedua', '120000', 'header_66a532137d9e9.png', '2024-07-27', 'K001EI6gl1');
+INSERT INTO `tb_pengeluaran` (`id_pengeluaran`, `jenis_pengeluaran`, `nominal`, `bukti_nota`, `tgl_pengeluaran`, `id_kegiatan`) VALUES ('P003yje3m8', 'Konsumsi Rapat', '200000', 'header_66a78492f3ccf.jpg', '2024-07-29', 'K002n83rPl');
+
 
 #
 # TABLE STRUCTURE FOR: tb_pengguna
@@ -107,5 +123,6 @@ CREATE TABLE `tb_pengguna` (
 INSERT INTO `tb_pengguna` (`id_pengguna`, `nama`, `no_hp`, `keterangan`, `email`, `password`, `foto_profile`, `id_level`) VALUES ('A001bnHDs', 'Erik W', '081456141227', 'Ini admin', 'erik@gmail.com', '202cb962ac59075b964b07152d234b70', 'profile_658bb959385e8.jpeg', '1');
 INSERT INTO `tb_pengguna` (`id_pengguna`, `nama`, `no_hp`, `keterangan`, `email`, `password`, `foto_profile`, `id_level`) VALUES ('A0025Iu6U0', 'Rani', '282762', 'Admin', 'rani@gmail.com', '202cb962ac59075b964b07152d234b70', '', '2');
 INSERT INTO `tb_pengguna` (`id_pengguna`, `nama`, `no_hp`, `keterangan`, `email`, `password`, `foto_profile`, `id_level`) VALUES ('A003rulfBY', 'Ani', '87373651', 'Perawat', 'ani@gmail.com', '202cb962ac59075b964b07152d234b70', '', '2');
+INSERT INTO `tb_pengguna` (`id_pengguna`, `nama`, `no_hp`, `keterangan`, `email`, `password`, `foto_profile`, `id_level`) VALUES ('A0043bmKX3', 'Bendahara', '123', 'jalen', 'bendahara@gmail.com', '202cb962ac59075b964b07152d234b70', '', '3');
 
 

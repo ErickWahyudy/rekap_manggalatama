@@ -17,14 +17,15 @@
             </div>
 
             <?php $no_kegiatan = 1; foreach($kegiatan as $k): ?>
-                <h2>
-                 <b><span class="badge badge-primary fa fa-apple"> <?= $k['nama_kegiatan'] ?></span></b>
-                </h2>
+            <h2>
+                <b><span class="badge badge-primary fa fa-apple"> <?= $k['nama_kegiatan'] ?></span></b>
+            </h2>
             <div class="x_content">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card-box table-responsive">
-                            <table id="datatable-buttons-<?= $no_kegiatan ?>" class="table table-striped table-bordered" style="width:100%">
+                            <table id="datatable-buttons-<?= $no_kegiatan ?>" class="table table-striped table-bordered"
+                                style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -37,35 +38,39 @@
                                 </thead>
                                 <tbody>
                                     <?php $no_laporan = 1; foreach ($data as $pemasukan): ?>
-                                        <?php if ($pemasukan['id_kegiatan'] == $k['id_kegiatan']): ?>
-                                            <tr>
-                                                <td><?= $no_laporan++ ?></td>
-                                                <td><?= $pemasukan['jenis_pemasukan'] ?></td>
-                                                <td><?= rupiah($pemasukan['nominal']) ?></td>
-                                                <td><?= tgl_indo($pemasukan['tgl_pemasukan']) ?></td>
-                                                <td>
-                                                <?php $stt = $pemasukan['bukti_transfer']; ?>
-                                                <?php if($stt == ''){ ?>
-                                                <img src="<?= base_url('themes/no_images.png') ?>" width="50px">
-                                                <a href="" class="btn btn-sm btn-primary" data-toggle="modal"
-                                                    data-target="#uploadBukti<?= $pemasukan['id_pemasukan'] ?>"><i
-                                                        class="fa fa-upload"></i></a>
-                                                <?php }else{ ?>
+                                    <?php if ($pemasukan['id_kegiatan'] == $k['id_kegiatan']): ?>
+                                    <tr>
+                                        <td><?= $no_laporan++ ?></td>
+                                        <td><?= $pemasukan['jenis_pemasukan'] ?></td>
+                                        <td><?= rupiah($pemasukan['nominal']) ?></td>
+                                        <td><?= tgl_indo($pemasukan['tgl_pemasukan']) ?></td>
+                                        <td>
+                                            <?php $stt = $pemasukan['bukti_transfer']; ?>
+                                            <?php if($stt == ''){ ?>
+                                            <img src="<?= base_url('themes/no_images.png') ?>" width="50px">
+                                            <a href="" class="btn btn-sm btn-primary" data-toggle="modal"
+                                                data-target="#uploadBukti<?= $pemasukan['id_pemasukan'] ?>"><i
+                                                    class="fa fa-upload"></i></a>
+                                            <?php }else{ ?>
+                                            <a href="<?= base_url('themes/bukti_transfer/'.$pemasukan['bukti_transfer']) ?>"
+                                                target="_blank">
                                                 <img src="<?= base_url('themes/bukti_transfer/'.$pemasukan['bukti_transfer']) ?>"
-                                                    width="200px">
-                                                <a href="javascript:void(0)"
-                                                    onclick="hapusbuktitransfer('<?= $pemasukan['id_pemasukan'] ?>')"
-                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-                                                <?php } ?>
-                                                </td>
-                                                    
-                                                <td>
-                                                    <a href="" class="btn btn-warning" data-toggle="modal"
-                                                    data-target="#edit<?= $pemasukan['id_pemasukan'] ?>"><i class="fa fa-edit"></i>
-                                                    Edit</a>
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
+                                                    width="50%">
+                                            </a>
+                                            <a href="javascript:void(0)"
+                                                onclick="hapusbuktitransfer('<?= $pemasukan['id_pemasukan'] ?>')"
+                                                class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                                            <?php } ?>
+                                        </td>
+
+                                        <td>
+                                            <a href="" class="btn btn-warning" data-toggle="modal"
+                                                data-target="#edit<?= $pemasukan['id_pemasukan'] ?>"><i
+                                                    class="fa fa-edit"></i>
+                                                Edit</a>
+                                        </td>
+                                    </tr>
+                                    <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -80,8 +85,8 @@
 </div>
 
 <!-- modal tambah -->
-<div class="modal fade" id="modalTambahPemasukan" tabindex="-1" role="dialog" aria-labelledby="modalTambahPemasukanLabel"
-    aria-hidden="true">
+<div class="modal fade" id="modalTambahPemasukan" tabindex="-1" role="dialog"
+    aria-labelledby="modalTambahPemasukanLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -93,26 +98,26 @@
             <div class="modal-body">
                 <table class="" style="width:100%">
                     <form id="add" method="post">
-                         <tr>
+                        <tr>
                             <td><label for="nama">Nama Kegiatan:</label></td>
                         </tr>
                         <tr>
-                                <td>
-                                    <select name="id_kegiatan" class="form-control" required="">
-                                        <?php 
+                            <td>
+                                <select name="id_kegiatan" class="form-control" required="">
+                                    <?php 
                                           $kegiatan;
                                           foreach($kegiatan as $row): ?>
-                                            <option value="<?= $row['id_kegiatan'] ?>"><?= $row['nama_kegiatan'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
+                                    <option value="<?= $row['id_kegiatan'] ?>"><?= $row['nama_kegiatan'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td><label for="nama">Jenis Pemasukan:</label></td>
                         </tr>
                         <tr>
-                            <td><input type="text" name="jenis_pemasukan" id="jenis_pemasukan" class="form-control" autocomplete="off"
-                                    required placeholder="Jenis Pemasukan"></td>
+                            <td><input type="text" name="jenis_pemasukan" id="jenis_pemasukan" class="form-control"
+                                    autocomplete="off" required placeholder="Jenis Pemasukan"></td>
                         </tr>
                         <tr>
                             <td><label for="nominal">Nominal:</label></td>
@@ -125,10 +130,11 @@
                             <td><label for="tgl_pemasukan">Tanggal Pemasukan:</label></td>
                         </tr>
                         <tr>
-                            <td><input type="date" name="tgl_pemasukan" id="tgl_pemasukan" class="form-control" autocomplete="off"
-                                    required placeholder="Tanggal Pemasukan" value="<?= date('Y-m-d') ?>"></td>
+                            <td><input type="date" name="tgl_pemasukan" id="tgl_pemasukan" class="form-control"
+                                    autocomplete="off" required placeholder="Tanggal Pemasukan"
+                                    value="<?= date('Y-m-d') ?>"></td>
                         </tr>
-                        
+
                         <tr>
                             <td><br><input type="submit" name="kirim" value="Simpan" class="btn btn-success"></td>
                         </tr>
@@ -142,50 +148,50 @@
 
 <!-- Modal edit bukti transfer -->
 <?php foreach($data as $pemasukan): ?>
-    <div class="modal fade" id="uploadBukti<?= $pemasukan['id_pemasukan'] ?>" tabindex="-1" role="dialog"
-        aria-labelledby="uploadBukti<?= $pemasukan['id_pemasukan'] ?>Label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadBukti<?= $pemasukan['id_pemasukan'] ?>">Upload Bukti Transfer</h5>
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="" style="width:100%">
-                        <form id="uploadBukti" method="post">
-                            <input type="hidden" name="id_pemasukan" value="<?= $pemasukan['id_pemasukan'] ?>"
-                                class="form-control" readonly>
-                            <tr>
-                                <td>
-                                    <label>Bukti Transfer</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="file" name="foto" id="bukti_transfer" class="form-control"
-                                        onchange="previewLOGO()" required>
-                                    <img id="preview_logo" alt="image preview" width="50%" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <br>
-                                    <button href="" class="btn btn-warning" data-dismiss="modal">Kembali</button>
-                                    &nbsp;&nbsp;
-                                    <input type="submit" name="kirim" value="Simpan" class="btn btn-success">
-                                    &nbsp;&nbsp;
-                                </td>
-                            </tr>
-                        </form>                   
-                    </table>
-                </div>
+<div class="modal fade" id="uploadBukti<?= $pemasukan['id_pemasukan'] ?>" tabindex="-1" role="dialog"
+    aria-labelledby="uploadBukti<?= $pemasukan['id_pemasukan'] ?>Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadBukti<?= $pemasukan['id_pemasukan'] ?>">Upload Bukti Transfer</h5>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="" style="width:100%">
+                    <form id="uploadBukti" method="post">
+                        <input type="hidden" name="id_pemasukan" value="<?= $pemasukan['id_pemasukan'] ?>"
+                            class="form-control" readonly>
+                        <tr>
+                            <td>
+                                <label>Bukti Transfer</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="file" name="foto" id="bukti_transfer" class="form-control"
+                                    onchange="previewLOGO()" required>
+                                <img id="preview_logo" alt="image preview" width="50%" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br>
+                                <button href="" class="btn btn-warning" data-dismiss="modal">Kembali</button>
+                                &nbsp;&nbsp;
+                                <input type="submit" name="kirim" value="Simpan" class="btn btn-success">
+                                &nbsp;&nbsp;
+                            </td>
+                        </tr>
+                    </form>
+                </table>
             </div>
         </div>
     </div>
-    <?php endforeach; ?>
+</div>
+<?php endforeach; ?>
 
 <!-- modal edit pemasukan -->
 <?php foreach($data as $pemasukan): ?>
@@ -207,23 +213,25 @@
                             <td><label for="nama">Nama Kegiatan:</label></td>
                         </tr>
                         <tr>
-                                <td>
-                                    <select name="id_kegiatan" class="form-control" required="">
-                                        <?php 
+                            <td>
+                                <select name="id_kegiatan" class="form-control" required="">
+                                    <?php 
                                           $kegiatan;
                                           foreach($kegiatan as $row): ?>
-                                            <option value="<?= $row['id_kegiatan'] ?>" <?= $row['id_kegiatan'] == $pemasukan['id_kegiatan'] ? 'selected' : '' ?>><?= $row['nama_kegiatan'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
+                                    <option value="<?= $row['id_kegiatan'] ?>"
+                                        <?= $row['id_kegiatan'] == $pemasukan['id_kegiatan'] ? 'selected' : '' ?>>
+                                        <?= $row['nama_kegiatan'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td><label for="nama">Jenis pemasukan:</label></td>
                         </tr>
                         <tr>
-                            <td><input type="text" name="jenis_pemasukan" id="jenis_pemasukan" class="form-control" autocomplete="off"
-                                    value="<?= $pemasukan['jenis_pemasukan'] ?>" required></td>
-                        </tr>     
+                            <td><input type="text" name="jenis_pemasukan" id="jenis_pemasukan" class="form-control"
+                                    autocomplete="off" value="<?= $pemasukan['jenis_pemasukan'] ?>" required></td>
+                        </tr>
                         <tr>
                             <td><label for="nominal">Nominal:</label></td>
                         </tr>
@@ -235,14 +243,15 @@
                             <td><label for="tgl_pemasukan">Tanggal Pemasukan:</label></td>
                         </tr>
                         <tr>
-                            <td><input type="date" name="tgl_pemasukan" id="tgl_pemasukan" class="form-control" autocomplete="off"
-                                    value="<?= $pemasukan['tgl_pemasukan'] ?>" required></td>
+                            <td><input type="date" name="tgl_pemasukan" id="tgl_pemasukan" class="form-control"
+                                    autocomplete="off" value="<?= $pemasukan['tgl_pemasukan'] ?>" required></td>
                         </tr>
-                        
+
                         <tr>
                             <td>
                                 <br><input type="submit" name="kirim" value="Simpan" class="btn btn-success">
-                                <a href="javascript:void(0)" onclick="hapuspemasukan('<?= $pemasukan['id_pemasukan'] ?>')"
+                                <a href="javascript:void(0)"
+                                    onclick="hapuspemasukan('<?= $pemasukan['id_pemasukan'] ?>')"
                                     class="btn btn-danger">Hapus</a>
                             </td>
                         </tr>
@@ -256,18 +265,18 @@
 
 
 <script>
-    $(document).ready(function() {
-        <?php $no_kegiatan = 1; foreach($kegiatan as $k): ?>
-            $('#datatable-buttons-<?= $no_kegiatan ?>').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-            });
-        <?php $no_kegiatan++; endforeach; ?>
+$(document).ready(function() {
+    <?php $no_kegiatan = 1; foreach($kegiatan as $k): ?>
+    $('#datatable-buttons-<?= $no_kegiatan ?>').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
     });
+    <?php $no_kegiatan++; endforeach; ?>
+});
 
-    
+
 //add data
 $(document).ready(function() {
     $('#add').submit(function(e) {
@@ -326,7 +335,8 @@ $(document).on('submit', '#edit', function(e) {
 
     $.ajax({
         type: "POST",
-        url: "<?php echo site_url('user/keuangan/pemasukan/api_edit/') ?>" + form_data.get('id_pemasukan'),
+        url: "<?php echo site_url('user/keuangan/pemasukan/api_edit/') ?>" + form_data.get(
+            'id_pemasukan'),
         dataType: "json",
         data: form_data,
         processData: false,
@@ -406,107 +416,106 @@ function hapuspemasukan(id_pemasukan) {
 
 //upload logo
 $(document).on('submit', '#uploadBukti', function(e) {
-        e.preventDefault();
-        var form_data = new FormData(this);
+    e.preventDefault();
+    var form_data = new FormData(this);
 
-        $.ajax({
-            type: "POST",
-            url: "<?php echo site_url('user/keuangan/pemasukan/api_upload/') ?>" +
-                form_data.get(
-                    'id_pemasukan'),
-            dataType: "json",
-            data: form_data,
-            processData: false,
-            contentType: false,
-            //memanggil swall ketika berhasil
-            success: function(data) {
-                $('#uploadBukti' + form_data.get('id_pemasukan'));
+    $.ajax({
+        type: "POST",
+        url: "<?php echo site_url('user/keuangan/pemasukan/api_upload/') ?>" +
+            form_data.get(
+                'id_pemasukan'),
+        dataType: "json",
+        data: form_data,
+        processData: false,
+        contentType: false,
+        //memanggil swall ketika berhasil
+        success: function(data) {
+            $('#uploadBukti' + form_data.get('id_pemasukan'));
+            swal({
+                title: "Berhasil",
+                text: "Data Berhasil Diubah",
+                type: "success",
+                showConfirmButton: true,
+                confirmButtonText: "OKEE",
+            }).then(function() {
+                location.reload();
+            });
+        },
+        //memanggil swall ketika gagal
+        error: function(data) {
+            swal({
+                title: "Gagal",
+                text: "Data Gagal Diubah",
+                type: "error",
+                showConfirmButton: true,
+                confirmButtonText: "OKEE",
+            }).then(function() {
+                location.reload();
+            });
+        }
+    });
+});
+
+
+//ajax hapus foto
+function hapusbuktitransfer(id_pemasukan) {
+    swal({
+        title: "Apakah Anda Yakin?",
+        text: "Background Akan Dihapus",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Ya, Hapus!",
+        cancelButtonText: "Tidak, Batalkan!",
+        closeOnConfirm: false,
+        closeOnCancel: true // Set this to true to close the dialog when the cancel button is clicked
+    }).then(function(result) {
+        if (result
+            .value
+        ) { // Only delete the data if the user clicked on the confirm button
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('user/keuangan/pemasukan/api_hapus_foto/') ?>" +
+                    id_pemasukan,
+                dataType: "json",
+            }).done(function() {
                 swal({
                     title: "Berhasil",
-                    text: "Data Berhasil Diubah",
+                    text: "Background Berhasil Dihapus",
                     type: "success",
                     showConfirmButton: true,
-                    confirmButtonText: "OKEE",
+                    confirmButtonText: "OKEE"
                 }).then(function() {
                     location.reload();
                 });
-            },
-            //memanggil swall ketika gagal
-            error: function(data) {
+            }).fail(function() {
                 swal({
                     title: "Gagal",
-                    text: "Data Gagal Diubah",
+                    text: "Background Gagal Dihapus",
                     type: "error",
                     showConfirmButton: true,
-                    confirmButtonText: "OKEE",
+                    confirmButtonText: "OKEE"
                 }).then(function() {
                     location.reload();
                 });
-            }
-        });
+            });
+        } else { // If the user clicked on the cancel button, show a message indicating that the deletion was cancelled
+            swal("Batal hapus", "Data Tidak Jadi Dihapus", "error");
+        }
     });
+}
 
+//preview Logo
+function previewLOGO() {
+    document.getElementById("preview_logo").style.display = "block";
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("bukti_transfer").files[0]);
 
-    //ajax hapus foto
-    function hapusbuktitransfer(id_pemasukan) {
-        swal({
-            title: "Apakah Anda Yakin?",
-            text: "Background Akan Dihapus",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Ya, Hapus!",
-            cancelButtonText: "Tidak, Batalkan!",
-            closeOnConfirm: false,
-            closeOnCancel: true // Set this to true to close the dialog when the cancel button is clicked
-        }).then(function(result) {
-            if (result
-                .value
-            ) { // Only delete the data if the user clicked on the confirm button
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo site_url('user/keuangan/pemasukan/api_hapus_foto/') ?>" +
-                        id_pemasukan,
-                    dataType: "json",
-                }).done(function() {
-                    swal({
-                        title: "Berhasil",
-                        text: "Background Berhasil Dihapus",
-                        type: "success",
-                        showConfirmButton: true,
-                        confirmButtonText: "OKEE"
-                    }).then(function() {
-                        location.reload();
-                    });
-                }).fail(function() {
-                    swal({
-                        title: "Gagal",
-                        text: "Background Gagal Dihapus",
-                        type: "error",
-                        showConfirmButton: true,
-                        confirmButtonText: "OKEE"
-                    }).then(function() {
-                        location.reload();
-                    });
-                });
-            } else { // If the user clicked on the cancel button, show a message indicating that the deletion was cancelled
-                swal("Batal hapus", "Data Tidak Jadi Dihapus", "error");
-            }
-        });
-    }
-
-    //preview Logo
-    function previewLOGO() {
-        document.getElementById("preview_logo").style.display = "block";
-        var oFReader = new FileReader();
-        oFReader.readAsDataURL(document.getElementById("bukti_transfer").files[0]);
-
-        oFReader.onload = function(oFREvent) {
-            document.getElementById("preview_logo").src = oFREvent.target.result;
-        };
-
+    oFReader.onload = function(oFREvent) {
+        document.getElementById("preview_logo").src = oFREvent.target.result;
     };
 
+};
 </script>
 
 <?php $this->load->view('template/footer'); ?>

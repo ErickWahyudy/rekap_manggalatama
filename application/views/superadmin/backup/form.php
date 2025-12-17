@@ -81,10 +81,9 @@
                         </tr>
                         <tr>
                             <td>
-                                <br>
+                                <br>                                
+                                <input type="submit" name="kirim" value="Simpan" class="btn btn-success">&emsp;
                                 <a href="" class="btn btn-primary" data-dismiss="modal">Kembali</a>
-                                &emsp;
-                                <input type="submit" name="kirim" value="Simpan" class="btn btn-success">
                             </td>
                         </tr>
                         </form>

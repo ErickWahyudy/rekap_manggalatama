@@ -13,20 +13,21 @@
                 <a href="" class="btn btn-primary" data-toggle="modal" data-target="#modalTambahPengeluaran"><i
                         class="fa fa-plus"></i>
                     Tambah</a>
-        
+
 
                 <div class="clearfix"></div>
             </div>
 
             <?php $no_kegiatan = 1; foreach($kegiatan as $k): ?>
-                <h2>
-                 <b><span class="badge badge-primary fa fa-apple"> <?= $k['nama_kegiatan'] ?></span></b>
-                </h2>
+            <h2>
+                <b><span class="badge badge-primary fa fa-apple"> <?= $k['nama_kegiatan'] ?></span></b>
+            </h2>
             <div class="x_content">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card-box table-responsive">
-                            <table id="datatable-buttons-<?= $no_kegiatan ?>" class="table table-striped table-bordered" style="width:100%">
+                            <table id="datatable-buttons-<?= $no_kegiatan ?>" class="table table-striped table-bordered"
+                                style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -37,28 +38,33 @@
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                               <tbody>
+                                <tbody>
                                     <?php $no_laporan = 1; foreach ($data as $pengeluaran): ?>
-                                        <?php if ($pengeluaran['id_kegiatan'] == $k['id_kegiatan']): ?>
-                                            <tr>
-                                                <td><?= $no_laporan++ ?></td>
-                                                <td><?= $pengeluaran['jenis_pengeluaran'] ?></td>
-                                                <td><?= rupiah($pengeluaran['nominal']) ?></td>
-                                                <td><?= tgl_indo($pengeluaran['tgl_pengeluaran']) ?></td>
-                                                <td>
-                                                    <?php if($pengeluaran['bukti_nota'] == null): ?>
-                                                    <img src="<?= base_url('themes/no_images.png') ?>" width="50px">
-                                                    <?php else: ?>
-                                                    <img src="<?= base_url('themes/bukti_nota/'.$pengeluaran['bukti_nota']) ?>" width="200px">
-                                                    <?php endif; ?>
-                                                </td>
-                                                <td>
-                                                    <a href="" class="btn btn-warning" data-toggle="modal"
-                                                        data-target="#edit<?= $pengeluaran['id_pengeluaran'] ?>"><i class="fa fa-edit"></i>
-                                                        Edit</a>
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
+                                    <?php if ($pengeluaran['id_kegiatan'] == $k['id_kegiatan']): ?>
+                                    <tr>
+                                        <td><?= $no_laporan++ ?></td>
+                                        <td><?= $pengeluaran['jenis_pengeluaran'] ?></td>
+                                        <td><?= rupiah($pengeluaran['nominal']) ?></td>
+                                        <td><?= tgl_indo($pengeluaran['tgl_pengeluaran']) ?></td>
+                                        <td>
+                                            <?php if($pengeluaran['bukti_nota'] == null): ?>
+                                            <img src="<?= base_url('themes/no_images.png') ?>" width="50px">
+                                            <?php else: ?>
+                                            <a href="<?= base_url('themes/bukti_nota/'.$pengeluaran['bukti_nota']) ?>"
+                                                target="_blank">
+                                                <img src="<?= base_url('themes/bukti_nota/'.$pengeluaran['bukti_nota']) ?>"
+                                                    width="50%">
+                                            </a>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <a href="" class="btn btn-warning" data-toggle="modal"
+                                                data-target="#edit<?= $pengeluaran['id_pengeluaran'] ?>"><i
+                                                    class="fa fa-edit"></i>
+                                                Edit</a>
+                                        </td>
+                                    </tr>
+                                    <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -74,8 +80,8 @@
 
 
 <!-- modal tambah pasien -->
-<div class="modal fade" id="modalTambahPengeluaran" tabindex="-1" role="dialog" aria-labelledby="modalTambahPengeluaranLabel"
-    aria-hidden="true">
+<div class="modal fade" id="modalTambahPengeluaran" tabindex="-1" role="dialog"
+    aria-labelledby="modalTambahPengeluaranLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -87,26 +93,26 @@
             <div class="modal-body">
                 <table class="" style="width:100%">
                     <form id="add" method="post">
-                         <tr>
+                        <tr>
                             <td><label for="nama">Nama Kegiatan:</label></td>
                         </tr>
                         <tr>
-                                <td>
-                                    <select name="id_kegiatan" class="form-control" required="">
-                                        <?php 
+                            <td>
+                                <select name="id_kegiatan" class="form-control" required="">
+                                    <?php 
                                           $kegiatan;
                                           foreach($kegiatan as $row): ?>
-                                            <option value="<?= $row['id_kegiatan'] ?>"><?= $row['nama_kegiatan'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
+                                    <option value="<?= $row['id_kegiatan'] ?>"><?= $row['nama_kegiatan'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td><label for="nama">Jenis Pengeluaran:</label></td>
                         </tr>
                         <tr>
-                            <td><input type="text" name="jenis_pengeluaran" id="jenis_pengeluaran" class="form-control" autocomplete="off"
-                                    required placeholder="Jenis Pengeluaran"></td>
+                            <td><input type="text" name="jenis_pengeluaran" id="jenis_pengeluaran" class="form-control"
+                                    autocomplete="off" required placeholder="Jenis Pengeluaran"></td>
                         </tr>
                         <tr>
                             <td><label for="nominal">Nominal:</label></td>
@@ -119,20 +125,21 @@
                             <td><label for="tgl_pengeluaran">Tanggal Pengeluaran:</label></td>
                         </tr>
                         <tr>
-                            <td><input type="date" name="tgl_pengeluaran" id="tgl_pengeluaran" class="form-control" autocomplete="off"
-                                    required placeholder="Tanggal pengeluaran" value="<?= date('Y-m-d') ?>"></td>
+                            <td><input type="date" name="tgl_pengeluaran" id="tgl_pengeluaran" class="form-control"
+                                    autocomplete="off" required placeholder="Tanggal pengeluaran"
+                                    value="<?= date('Y-m-d') ?>"></td>
                         </tr>
                         <tr>
                             <td><label for="bukti">Bukti: *Nota / Kwitansi</label></td>
                         </tr>
                         <tr>
                             <td>
-                            <input type="file" name="foto" id="bukti_nota" class="form-control"
-                                        onchange="previewLOGO()" required>
-                                    <img id="preview_logo" alt="image preview" width="50%" />
+                                <input type="file" name="foto" id="bukti_nota" class="form-control"
+                                    onchange="previewLOGO()" required>
+                                <img id="preview_logo" alt="image preview" width="50%" />
                             </td>
                         </tr>
-                        
+
                         <tr>
                             <td><br><input type="submit" name="kirim" value="Simpan" class="btn btn-success"></td>
                         </tr>
@@ -164,23 +171,25 @@
                             <td><label for="nama">Nama Kegiatan:</label></td>
                         </tr>
                         <tr>
-                                <td>
-                                    <select name="id_kegiatan" class="form-control" required="">
-                                        <?php 
+                            <td>
+                                <select name="id_kegiatan" class="form-control" required="">
+                                    <?php 
                                           $kegiatan;
                                           foreach($kegiatan as $row): ?>
-                                            <option value="<?= $row['id_kegiatan'] ?>" <?= $row['id_kegiatan'] == $pengeluaran['id_kegiatan'] ? 'selected' : '' ?>><?= $row['nama_kegiatan'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
+                                    <option value="<?= $row['id_kegiatan'] ?>"
+                                        <?= $row['id_kegiatan'] == $pengeluaran['id_kegiatan'] ? 'selected' : '' ?>>
+                                        <?= $row['nama_kegiatan'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td><label for="nama">Jenis Pengeluaran:</label></td>
                         </tr>
                         <tr>
-                            <td><input type="text" name="jenis_pengeluaran" id="jenis_pengeluaran" class="form-control" autocomplete="off"
-                                    value="<?= $pengeluaran['jenis_pengeluaran'] ?>" required></td>
-                        </tr>     
+                            <td><input type="text" name="jenis_pengeluaran" id="jenis_pengeluaran" class="form-control"
+                                    autocomplete="off" value="<?= $pengeluaran['jenis_pengeluaran'] ?>" required></td>
+                        </tr>
                         <tr>
                             <td><label for="nominal">Nominal:</label></td>
                         </tr>
@@ -192,14 +201,15 @@
                             <td><label for="tgl_pengeluaran">Tanggal pengeluaran:</label></td>
                         </tr>
                         <tr>
-                            <td><input type="date" name="tgl_pengeluaran" id="tgl_pengeluaran" class="form-control" autocomplete="off"
-                                    value="<?= $pengeluaran['tgl_pengeluaran'] ?>" required></td>
+                            <td><input type="date" name="tgl_pengeluaran" id="tgl_pengeluaran" class="form-control"
+                                    autocomplete="off" value="<?= $pengeluaran['tgl_pengeluaran'] ?>" required></td>
                         </tr>
-                       
+
                         <tr>
                             <td>
                                 <br><input type="submit" name="kirim" value="Simpan" class="btn btn-success">
-                                <a href="javascript:void(0)" onclick="hapuspengeluaran('<?= $pengeluaran['id_pengeluaran'] ?>')"
+                                <a href="javascript:void(0)"
+                                    onclick="hapuspengeluaran('<?= $pengeluaran['id_pengeluaran'] ?>')"
                                     class="btn btn-danger">Hapus</a>
                             </td>
                         </tr>
@@ -213,16 +223,16 @@
 
 
 <script>
-    $(document).ready(function() {
-        <?php $no_kegiatan = 1; foreach($kegiatan as $k): ?>
-            $('#datatable-buttons-<?= $no_kegiatan ?>').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-            });
-        <?php $no_kegiatan++; endforeach; ?>
+$(document).ready(function() {
+    <?php $no_kegiatan = 1; foreach($kegiatan as $k): ?>
+    $('#datatable-buttons-<?= $no_kegiatan ?>').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
     });
+    <?php $no_kegiatan++; endforeach; ?>
+});
 
 //add data
 $(document).ready(function() {
@@ -282,7 +292,8 @@ $(document).on('submit', '#edit', function(e) {
 
     $.ajax({
         type: "POST",
-        url: "<?php echo site_url('superadmin/keuangan/pengeluaran/api_edit/') ?>" + form_data.get('id_pengeluaran'),
+        url: "<?php echo site_url('superadmin/keuangan/pengeluaran/api_edit/') ?>" + form_data.get(
+            'id_pengeluaran'),
         dataType: "json",
         data: form_data,
         processData: false,
@@ -331,7 +342,8 @@ function hapuspengeluaran(id_pengeluaran) {
         if (result.value) { // Only delete the data if the user clicked on the confirm button
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('superadmin/keuangan/pengeluaran/api_hapus/') ?>" + id_pengeluaran,
+                url: "<?php echo site_url('superadmin/keuangan/pengeluaran/api_hapus/') ?>" +
+                    id_pengeluaran,
                 dataType: "json",
             }).done(function() {
                 swal({
@@ -362,16 +374,15 @@ function hapuspengeluaran(id_pengeluaran) {
 
 //preview Logo
 function previewLOGO() {
-        document.getElementById("preview_logo").style.display = "block";
-        var oFReader = new FileReader();
-        oFReader.readAsDataURL(document.getElementById("bukti_nota").files[0]);
+    document.getElementById("preview_logo").style.display = "block";
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("bukti_nota").files[0]);
 
-        oFReader.onload = function(oFREvent) {
-            document.getElementById("preview_logo").src = oFREvent.target.result;
-        };
-
+    oFReader.onload = function(oFREvent) {
+        document.getElementById("preview_logo").src = oFREvent.target.result;
     };
 
+};
 </script>
 
 <?php $this->load->view('template/footer'); ?>
